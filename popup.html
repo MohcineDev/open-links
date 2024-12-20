@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Popup</title>
+    <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+    <h1>Welcome</h1>
+    <label for="none">
+        <input type="radio" name="site" checked id="none">
+        None
+    </label>
+    <label for="google">
+        <input type="radio" name="site" id="google">
+        Google
+    </label>
+    <label for="drop">
+        <input type="radio" name="site" id="drop">
+        Namedroppers
+    </label>
+    <input type="text" class="selector" placeholder="css selector">
+    <span class="err"></span>
+    <button id="runScript">Open links</button>
+    <script src="popup.js"></script>
+</body>
+
+</html>

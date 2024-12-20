@@ -1,0 +1,28 @@
+{
+  "manifest_version": 2,
+  "name": "open links",
+  "author": "Mohcinedev",
+  "version": "1.0",
+  "description": "Runs a script when the extension is clicked",
+  "permissions": [
+    "activeTab"
+  ],
+  "icons": {
+    "48": "icons/icon48.png"
+  },
+  "browser_action": {
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    },
+    "default_title": "Run Script",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ]
+}

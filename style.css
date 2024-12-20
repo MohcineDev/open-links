@@ -1,0 +1,37 @@
+body {
+    max-width: 210px;
+    padding: 10px;
+    color: #eee;
+    border: 1px solid #fff;
+    background-color: #101020;
+    font-family: Arial, Helvetica, sans-serif;
+}
+h1{
+    margin: 5px;
+    text-align: center;
+}
+label{
+    margin: 5px 0;
+    display: block;
+    cursor: pointer;
+    user-select: none;
+}
+input[type="text"], button {
+    width: 80%;
+    border: none;
+    outline: none;
+    display: block;
+    padding: 5px 8px;
+    margin: 10px auto;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+ 
+
+button {
+    cursor: pointer;
+}
+.err{
+    color: crimson;
+    font-size: 13px;
+}
