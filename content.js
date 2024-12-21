@@ -2,6 +2,8 @@
 const OPEN = 5
 let count = 0
 let links = []
+const toOpen = 2
+let myInter;
 
 browser.runtime.onMessage.addListener((msg) => {
     if (msg.action === 'runScript') {
@@ -14,33 +16,44 @@ browser.runtime.onMessage.addListener((msg) => {
 
 
         usingInterval(links)
+    } else if (msg.action === 'stopInterval') {
+        sendResponse({ success: true, msg: "interval stopped!!!!" })
+        stopInterval(myInter)
+
     }
 })
 console.log('Content script loaded')
 
 ///open links in new tabs
 function openLinks() {
-    for (let i = 0; i < OPEN; i++) {
+
+    let a = OPEN > toOpen ? toOpen : OPEN
+
+    for (let i = 0; i < a; i++) {
         if (links[count + i] != null) {
 
             window.open(links[count + i])
-        } else
-            sendResponse({ success: true, msg: "link not found" })
+        } 
+        // else
+        //     sendResponse({ success: true, msg: "link not found" })
     }
-    count += OPEN
+    count += a
 }
 
 
 function usingInterval(links) {
     openLinks()
 
-    let myInter = setInterval(() => {
+    myInter = setInterval(() => {
 
-        if (count >= links.length) {
-            clearInterval(myInter)
+        if (count >= toOpen) {
+            stopInterval(myInter)
             console.log("interval stopped!!!!")
         } else {
             openLinks()
         }
-    }, 30000)
+    }, 10000)
 }
+
+const stopInterval = (inter) =>
+    clearInterval(inter)

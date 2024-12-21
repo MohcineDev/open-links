@@ -6,16 +6,19 @@ body {
     background-color: #101020;
     font-family: Arial, Helvetica, sans-serif;
 }
-h1{
+
+h1 {
     margin: 5px;
     text-align: center;
 }
-label{
+
+label {
     margin: 5px 0;
-    display: block;
+    display: inline-block;
     cursor: pointer;
     user-select: none;
 }
+
 input[type="text"], button {
     width: 80%;
     border: none;
@@ -26,12 +29,22 @@ input[type="text"], button {
     border-radius: 5px;
     box-sizing: border-box;
 }
- 
+
 
 button {
     cursor: pointer;
 }
-.err{
+
+.err {
     color: crimson;
     font-size: 13px;
+}
+
+.res {
+    color: rgb(63, 224, 108);
+    font-size: 13px;
+}
+
+#stop-Interval {
+    background: #df5e47;
 }
