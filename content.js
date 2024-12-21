@@ -1,25 +1,28 @@
 //how many to open at a time
-const OPEN = 5
+const toOpen = 2
 let count = 0
 let links = []
-const toOpen = 2
 let myInter;
+let OPEN = 1
+let stopOnGoing = false
 
-browser.runtime.onMessage.addListener((msg) => {
+browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (msg.action === 'runScript') {
-        console.log(msg.value)
+        console.log(msg.selector)
+        OPEN = parseInt(msg.openBy)
         if (msg.site === 'google')
             links = document.querySelectorAll('#rso span>a')
 
         else if (msg.site === 'drop')
             links = document.querySelectorAll('a.domain')
 
+        links.length ?
+            usingInterval(links) :
+            sendResponse({ success: true, message: "link not found \n invalid selector!!" })
 
-        usingInterval(links)
     } else if (msg.action === 'stopInterval') {
-        sendResponse({ success: true, msg: "interval stopped!!!!" })
+        sendResponse({ success: true, msg: "openning stopped!!!!" })
         stopInterval(myInter)
-
     }
 })
 console.log('Content script loaded')
@@ -27,17 +30,18 @@ console.log('Content script loaded')
 ///open links in new tabs
 function openLinks() {
 
-    let a = OPEN > toOpen ? toOpen : OPEN
+    // let a = OPEN > toOpen ? toOpen : OPEN
+    if (!stopOnGoing) {
 
-    for (let i = 0; i < a; i++) {
-        if (links[count + i] != null) {
-
-            window.open(links[count + i])
-        } 
-        // else
-        //     sendResponse({ success: true, msg: "link not found" })
+        for (let i = 0; i < OPEN; i++) {
+            if (links[count + i] != null) {
+                console.log('open : ', links[count + i].href)
+                window.open(links[count + i].href)
+            }
+        }
+        count += OPEN
     }
-    count += a
+
 }
 
 
@@ -46,7 +50,7 @@ function usingInterval(links) {
 
     myInter = setInterval(() => {
 
-        if (count >= toOpen) {
+        if (count >= links) {
             stopInterval(myInter)
             console.log("interval stopped!!!!")
         } else {
@@ -55,5 +59,8 @@ function usingInterval(links) {
     }, 10000)
 }
 
-const stopInterval = (inter) =>
+const stopInterval = (inter) => {
+    console.log('interval stopped')
+    stopOnGoing = true
     clearInterval(inter)
+}

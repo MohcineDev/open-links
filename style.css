@@ -11,12 +11,14 @@ h1 {
     margin: 5px;
     text-align: center;
 }
+label{
+    user-select: none;
 
-label {
+}
+.sites label {
     margin: 5px 0;
     display: inline-block;
     cursor: pointer;
-    user-select: none;
 }
 
 input[type="text"], button {
@@ -47,4 +49,16 @@ button {
 
 #stop-Interval {
     background: #df5e47;
+}
+
+.options {
+    font-size: 12px;
+    margin: 10px 0;
+}
+
+.options input[type=number] {
+    border: navajowhite;
+    margin: 0 6px;
+    text-align: center;
+    outline: none;
 }

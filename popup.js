@@ -1,31 +1,33 @@
-const input = document.querySelector('.selector')
+const selector = document.querySelector('.selector').value.trim()
 const err = document.querySelector('.err')
-const res = document.querySelector('.res')
+const info = document.querySelector('.res')
 
 document.getElementById('runScript').addEventListener('click', async () => {
+    ///after the open is clicked
+    const openBy = document.querySelector('#openby').value
     const siteRadio = document.querySelector('input[type="radio"]:checked').id
     console.log(siteRadio)
 
-    if (siteRadio === 'none' && input.value.trim() === '') {
+    if (siteRadio === 'none' && selector === '') {
 
-        err.textContent = "enter css selector\n or select google / namedroppers"
+        err.textContent = "enter css selector\n or select a site"
         hideMsg(err)
     } else {
 
         const tabs = await browser.tabs.query({ active: true, currentWindow: true })
         if (tabs.length > 0) {
             try {
-                const response = await browser.tabs.sendMessage(tabs[0].id, {
-                    action: 'runScript', value: input.value, site: siteRadio
+                const res = await browser.tabs.sendMessage(tabs[0].id, {
+                    action: 'runScript', selector, site: siteRadio,
+                    openBy
                 })
-                if (response && response.success) {
-                    err.textContent = response.msg
+                if (res && res.success) {
+                    err.textContent = res.message
                     hideMsg(err)
                 }
             } catch (error) {
                 console.error('Error sending message:', error)
             }
-
         }
     }
 })
@@ -35,12 +37,12 @@ document.getElementById('stop-Interval').addEventListener('click', async () => {
     const tabs = await browser.tabs.query({ active: true, currentWindow: true })
     if (tabs.length > 0) {
         try {
-            const response = await browser.tabs.sendMessage(tabs[0].id, {
+            const res = await browser.tabs.sendMessage(tabs[0].id, {
                 action: 'stopInterval'
             })
-            if (response && response.success) {
-                res.textContent = response.msg
-                hideMsg(res)
+            if (res && res.success) {
+                info.textContent = res.msg
+                hideMsg(info)
             }
         } catch (error) {
             console.error('Error sending message:', error)
@@ -53,5 +55,5 @@ document.getElementById('stop-Interval').addEventListener('click', async () => {
 const hideMsg = (elem) => {
     setTimeout(() => {
         elem.textContent = ''
-    }, 3000)
+    }, 5000)
 }
