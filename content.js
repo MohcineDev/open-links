@@ -5,7 +5,8 @@ let links = []
 let myInter;
 let OPEN = 1
 let stopOnGoing = false
-
+let toWait = true
+console.log(document.querySelectorAll("#namecheck .taken div:nth-of-type(2) a"))
 browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (msg.action === 'runScript') {
         console.log(msg.selector)
@@ -16,14 +17,22 @@ browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         else if (msg.site === 'drop')
             links = document.querySelectorAll('a.domain')
 
-        links.length ?
-            usingInterval(links) :
-            sendResponse({ success: true, message: "link not found \n invalid selector!!" })
+
 
     } else if (msg.action === 'stopInterval') {
         sendResponse({ success: true, msg: "openning stopped!!!!" })
         stopInterval(myInter)
+    } else if (msg.action == "open-taken") {
+        links = document.querySelectorAll("#namecheck .taken div:nth-of-type(2) a")
+        toWait = false
+        sendResponse({ success: true, msg: links.length })
     }
+    
+    links.length ?
+
+    usingInterval(links, toWait) :
+    sendResponse({ success: true, message: "link not found \n invalid selector!!" })
+
 })
 console.log('Content script loaded')
 
@@ -45,9 +54,9 @@ function openLinks() {
 }
 
 
-function usingInterval(links) {
+function usingInterval(links, wait) {
     openLinks()
-
+    let milli = wait ? 10000 : 0
     myInter = setInterval(() => {
 
         if (count >= links) {
@@ -56,7 +65,7 @@ function usingInterval(links) {
         } else {
             openLinks()
         }
-    }, 10000)
+    }, milli)
 }
 
 const stopInterval = (inter) => {

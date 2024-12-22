@@ -1,6 +1,8 @@
 const selector = document.querySelector('.selector').value.trim()
 const err = document.querySelector('.err')
 const info = document.querySelector('.res')
+const takenMsg = document.querySelector('.taken-msg')
+
 
 document.getElementById('runScript').addEventListener('click', async () => {
     ///after the open is clicked
@@ -42,6 +44,25 @@ document.getElementById('stop-Interval').addEventListener('click', async () => {
             })
             if (res && res.success) {
                 info.textContent = res.msg
+                hideMsg(info)
+            }
+        } catch (error) {
+            console.error('Error sending message:', error)
+        }
+
+    }
+
+})
+
+document.getElementById('taken').addEventListener('click', async () => {
+    const tabs = await browser.tabs.query({ active: true, currentWindow: true })
+    if (tabs.length > 0) {
+        try {
+            const res = await browser.tabs.sendMessage(tabs[0].id, {
+                action: 'open-taken'
+            })
+            if (res && res.success) {
+                takenMsg.textContent += res.msg
                 hideMsg(info)
             }
         } catch (error) {

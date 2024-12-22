@@ -3,7 +3,7 @@
   "name": "open links",
   "author": "Mohcinedev",
   "version": "1.0",
-  "description": "Runs a script when the extension is clicked",
+  "description": "Smart Link Opener is your go-to tool for automating link navigation. Designed for efficiency, this extension lets you open links dynamically with customizable intervals from various sources such as Google Search or NameDroppers. You can even provide your own CSS selector to target specific links on any webpage.",
   "permissions": [
     "activeTab"
   ],
@@ -16,7 +16,7 @@
       "48": "icons/icon48.png",
       "128": "icons/icon128.png"
     },
-    "default_title": "Run Script",
+    "default_title": "open links popup",
     "default_popup": "popup.html"
   },
   "content_scripts": [

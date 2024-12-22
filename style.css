@@ -11,10 +11,12 @@ h1 {
     margin: 5px;
     text-align: center;
 }
-label{
+
+label {
     user-select: none;
 
 }
+
 .sites label {
     margin: 5px 0;
     display: inline-block;
@@ -61,4 +63,12 @@ button {
     margin: 0 6px;
     text-align: center;
     outline: none;
+}
+
+#taken  {
+    color: #eee;
+    background-color: #93141b;
+}
+#taken:hover  {
+    background-color: #ac1d24;
 }
