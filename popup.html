@@ -11,11 +11,11 @@
     <div class="sites">
 
         <div>
-            <input type="radio" name="site" checked id="none">
+            <input type="radio" name="site" id="none">
             <label for="none">None</label>
         </div>
         <div>
-            <input type="radio" name="site" id="google">
+            <input type="radio" name="site" checked id="google">
             <label for="google">Google Search</label>
         </div>
         <div>
@@ -24,9 +24,14 @@
         </div>
     </div>
     <div class="options">
-        <div>
+        <div class="open-by">
             <label for="open">Open By:</label>
-            <input type="number" id="openby" min="1" max="10" value="5">
+            <div class="elem">
+                <button>-</button>
+                <span>1</span>
+                <button>+</button>
+              </div>
+            <!-- <input type="number" id="openby" min="1" max="10" value="5"> -->
         </div>
         <!-- <div>
             <label for="open">to open</label>
@@ -35,14 +40,15 @@
     </div>
     <input type="text" class="selector" placeholder="css selector">
     <span class="err"></span>
-    <button id="runScript">Open links</button>
-    <button id="stop-Interval" title="back to main page to stop the openning!">Stop</button>
+    <button class="btn action" id="runScript">Open links</button>
+    <button class="btn action" id="stop-Interval" title="back to main page to stop the openning!">Stop</button>
     <span class="res"></span>
     <hr>
     <p>Expired Domains</p>
-    <p>open taken TLDs from domain page</p>
-    <button id="taken">Open Taken</button>
-    <span class="taken-msg">Open : </span>
+    <p class="small">open taken TLDs from domain page</p>
+    <button class="btn action" id="taken">Open Taken</button>
+    <hr>
+    <span class="total-open">Total To Open : </span>
 
     <script src="popup.js"></script>
 </body>

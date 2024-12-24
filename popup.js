@@ -1,31 +1,69 @@
-const selector = document.querySelector('.selector').value.trim()
-const err = document.querySelector('.err')
 const info = document.querySelector('.res')
-const takenMsg = document.querySelector('.taken-msg')
+const err = document.querySelector('.err')
+const totalOpen = document.querySelector('.total-open')
 
+let openBy = document.querySelector(".elem span");
+const btns = document.querySelectorAll(".elem button");
+btns.forEach((btn) => (btn.onclick = () => handleClick(btn)));
 
-document.getElementById('runScript').addEventListener('click', async () => {
+function handleClick(btn) {
+    let value = parseInt(openBy.textContent);
+    btn.textContent == "-" ? (value -= 1) : (value += 1);
+    value > 10 ? (value = 10) : value < 1 ? (value = 1) : null;
+    openBy.textContent = value;
+}
+
+document.querySelectorAll('.action').forEach(btn => btn.addEventListener('click', async e => {
+    const selector = document.querySelector('.selector').value.trim()
     ///after the open is clicked
-    const openBy = document.querySelector('#openby').value
+    let openByNbr = openBy.textContent
     const siteRadio = document.querySelector('input[type="radio"]:checked').id
-    console.log(siteRadio)
+    const tabs = await browser.tabs.query({ active: true, currentWindow: true })
 
-    if (siteRadio === 'none' && selector === '') {
+    if (tabs.length > 0) {
+        if (e.target.id === 'runScript') {
+            if (siteRadio === 'none' && selector === '') {
+                err.textContent = "enter css selector\n or select a site"
+                hideMsg(err)
+            } else {
+                try {
+                    const res = await browser.tabs.sendMessage(tabs[0].id, {
+                        action: 'runScript', selector, site: siteRadio,
+                        openByNbr
+                    })
+                    if (res && res.success) {
+                        totalOpen.textContent = `Total To Open : ${res.msg}`
 
-        err.textContent = "enter css selector\n or select a site"
-        hideMsg(err)
-    } else {
-
-        const tabs = await browser.tabs.query({ active: true, currentWindow: true })
-        if (tabs.length > 0) {
+                        hideMsg(totalOpen)
+                    }
+                } catch (error) {
+                    err.textContent = res.msg
+                    hideMsg(err)
+                    console.error('Error sending message:', error)
+                }
+            }
+        }
+        else if (e.target.id === 'stop-Interval') {
             try {
                 const res = await browser.tabs.sendMessage(tabs[0].id, {
-                    action: 'runScript', selector, site: siteRadio,
-                    openBy
+                    action: 'stopInterval'
                 })
                 if (res && res.success) {
-                    err.textContent = res.message
-                    hideMsg(err)
+                    info.textContent = res.msg
+                    hideMsg(info)
+                }
+            } catch (error) {
+                console.error('Error sending message:', error)
+            }
+        }
+        else if (e.target.id === 'taken') {
+            try {
+                const res = await browser.tabs.sendMessage(tabs[0].id, {
+                    action: 'open-taken'
+                })
+                if (res && res.success) {
+                    totalOpen.textContent = `Total To Open : ${res.msg}`
+                    hideMsg(info)
                 }
             } catch (error) {
                 console.error('Error sending message:', error)
@@ -33,46 +71,7 @@ document.getElementById('runScript').addEventListener('click', async () => {
         }
     }
 })
-
-
-document.getElementById('stop-Interval').addEventListener('click', async () => {
-    const tabs = await browser.tabs.query({ active: true, currentWindow: true })
-    if (tabs.length > 0) {
-        try {
-            const res = await browser.tabs.sendMessage(tabs[0].id, {
-                action: 'stopInterval'
-            })
-            if (res && res.success) {
-                info.textContent = res.msg
-                hideMsg(info)
-            }
-        } catch (error) {
-            console.error('Error sending message:', error)
-        }
-
-    }
-
-})
-
-document.getElementById('taken').addEventListener('click', async () => {
-    const tabs = await browser.tabs.query({ active: true, currentWindow: true })
-    if (tabs.length > 0) {
-        try {
-            const res = await browser.tabs.sendMessage(tabs[0].id, {
-                action: 'open-taken'
-            })
-            if (res && res.success) {
-                takenMsg.textContent += res.msg
-                hideMsg(info)
-            }
-        } catch (error) {
-            console.error('Error sending message:', error)
-        }
-
-    }
-
-})
-
+)
 const hideMsg = (elem) => {
     setTimeout(() => {
         elem.textContent = ''

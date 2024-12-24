@@ -1,8 +1,11 @@
+:root{
+    --light:#eee;
+}
 body {
     max-width: 210px;
     padding: 10px;
-    color: #eee;
-    border: 1px solid #fff;
+    color: var(--light);
+    border: 1px solid var(--light);
     background-color: #101020;
     font-family: Arial, Helvetica, sans-serif;
 }
@@ -17,13 +20,20 @@ label {
 
 }
 
+span {
+    font-size: 14px;
+}
+
+.small{
+    font-size: 14px;
+}
 .sites label {
     margin: 5px 0;
     display: inline-block;
     cursor: pointer;
 }
 
-input[type="text"], button {
+input[type="text"], .btn {
     width: 80%;
     border: none;
     outline: none;
@@ -65,10 +75,53 @@ button {
     outline: none;
 }
 
-#taken  {
-    color: #eee;
+.open-by{
+    display: flex;
+    align-items: center;
+}
+
+.elem {
+    width: 120px;
+    border-radius: 5px;
+    margin-left: 1rem;
+    background-color: var(--light);
+    border: 1px solid #ababab;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    padding: 3px 0;
+}
+
+.elem span {
+    flex: 2;
+    text-align: center;
+    color: #000;
+}
+
+.elem button {
+    border: none;
+    flex: 1;
+    align-self: stretch;
+    background-color: var(--light);
+    cursor: pointer;
+}
+
+.elem button:nth-child(1) {
+    border-right: 1px solid #ababab;
+    border-radius: 5px 0 0 5px;
+}
+
+.elem button:nth-child(3) {
+    border-left: 1px solid #ababab;
+    border-radius: 0 5px 5px 0;
+}
+
+/* ///expired */
+#taken {
+    color: var(--light);
     background-color: #93141b;
 }
-#taken:hover  {
+
+#taken:hover {
     background-color: #ac1d24;
 }
