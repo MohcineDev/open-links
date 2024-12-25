@@ -9,17 +9,18 @@ let toWait = true
 
 browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (msg.action === 'runScript') {
-        console.log(document.querySelectorAll('#rso span>a'))
         OPEN = parseInt(msg.openByNbr)
-        console.log(OPEN, parseInt(msg.openByNbr))
         if (msg.site === 'google')
             links = document.querySelectorAll('#rso span>a')
 
         else if (msg.site === 'drop')
             links = document.querySelectorAll('a.domain')
-
+        else if (msg.selector) {
+            links = document.querySelectorAll(`${msg.selector}`)
+        }
+        ///.Nv2PK.tH5CWc.THOPZb a[data-value="Website"]
     } else if (msg.action === 'stopInterval') {
-        sendResponse({ success: true, msg: "openning stopped!!!!" })
+        sendResponse({ success: true, msg: "Opening Stopped!!!!" })
         stopInterval(myInter)
     } else if (msg.action == "open-taken") {
         links = document.querySelectorAll("#namecheck .taken div:nth-of-type(2) a")
@@ -28,13 +29,12 @@ browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
     links.length ? (
         usingInterval(links, toWait),
-        console.log("fsdddddddd"),
-        sendResponse({ success: true, msg: links.length })
-    ) :
-        sendResponse({ success: true, msg: "link not found \n invalid selector!!" })
+        sendResponse({ success: true, msg: links.length, err: false })
+    ) : (
+        sendResponse({ success: true, msg: "Link not found \nOR\nInvalid Selector!!", err: true })
+    )
 
 })
-console.log('Content script loaded')
 
 ///open links in new tabs
 function openLinks() {
@@ -42,19 +42,16 @@ function openLinks() {
     // let a = OPEN > toOpen ? toOpen : OPEN
     if (!stopOnGoing) {
 
-        console.log("OPEN : ", OPEN)
         for (let i = 0; i < OPEN; i++) {
 
             if (links[count + i] != null) {
-                console.log('open : ', links[count + i].href)
                 window.open(links[count + i].href)
+
             }
         }
         count += OPEN
     }
-
 }
-
 
 function usingInterval(links, wait) {
     openLinks()
@@ -63,7 +60,6 @@ function usingInterval(links, wait) {
 
         if (count >= links) {
             stopInterval(myInter)
-            console.log("interval stopped!!!!")
         } else {
             openLinks()
         }
@@ -71,7 +67,6 @@ function usingInterval(links, wait) {
 }
 
 const stopInterval = (inter) => {
-    console.log('interval stopped')
     stopOnGoing = true
     clearInterval(inter)
 }

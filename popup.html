@@ -7,15 +7,18 @@
 </head>
 
 <body>
+    <span class="err"></span>
+    <span class="info"></span>
+
     <h1>Welcome</h1>
     <div class="sites">
 
         <div>
-            <input type="radio" name="site" id="none">
+            <input type="radio" name="site" checked id="none">
             <label for="none">None</label>
         </div>
         <div>
-            <input type="radio" name="site" checked id="google">
+            <input type="radio" name="site" id="google">
             <label for="google">Google Search</label>
         </div>
         <div>
@@ -39,16 +42,12 @@
         </div> -->
     </div>
     <input type="text" class="selector" placeholder="css selector">
-    <span class="err"></span>
     <button class="btn action" id="runScript">Open links</button>
     <button class="btn action" id="stop-Interval" title="back to main page to stop the openning!">Stop</button>
-    <span class="res"></span>
     <hr>
     <p>Expired Domains</p>
     <p class="small">open taken TLDs from domain page</p>
     <button class="btn action" id="taken">Open Taken</button>
-    <hr>
-    <span class="total-open">Total To Open : </span>
 
     <script src="popup.js"></script>
 </body>

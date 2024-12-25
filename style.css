@@ -1,6 +1,7 @@
-:root{
-    --light:#eee;
+:root {
+    --light: #eee;
 }
+
 body {
     max-width: 210px;
     padding: 10px;
@@ -24,9 +25,10 @@ span {
     font-size: 14px;
 }
 
-.small{
+.small {
     font-size: 14px;
 }
+
 .sites label {
     margin: 5px 0;
     display: inline-block;
@@ -49,14 +51,31 @@ button {
     cursor: pointer;
 }
 
+.info,
 .err {
-    color: crimson;
-    font-size: 13px;
+    font-size: 14px;
+    position: absolute;
+    color: #fff;
+    padding: 5px 4px;
+    border-radius: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 15px #000;
+    top: -50px;
+    transition: top 0.3s;
+    text-align: center;
 }
 
-.res {
-    color: rgb(63, 224, 108);
-    font-size: 13px;
+.err {
+    background-color: #c12847;
+}
+
+.info {
+    background-color: rgb(38, 174, 76);
+}
+
+.display-msg{
+    top: 50px;
 }
 
 #stop-Interval {
@@ -75,7 +94,7 @@ button {
     outline: none;
 }
 
-.open-by{
+.open-by {
     display: flex;
     align-items: center;
 }
@@ -114,6 +133,10 @@ button {
 .elem button:nth-child(3) {
     border-left: 1px solid #ababab;
     border-radius: 0 5px 5px 0;
+}
+
+.selector{
+    font-size: 11px;
 }
 
 /* ///expired */

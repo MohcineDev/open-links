@@ -1,6 +1,5 @@
-const info = document.querySelector('.res')
+const info = document.querySelector('.info')
 const err = document.querySelector('.err')
-const totalOpen = document.querySelector('.total-open')
 
 let openBy = document.querySelector(".elem span");
 const btns = document.querySelectorAll(".elem button");
@@ -32,12 +31,16 @@ document.querySelectorAll('.action').forEach(btn => btn.addEventListener('click'
                         openByNbr
                     })
                     if (res && res.success) {
-                        totalOpen.textContent = `Total To Open : ${res.msg}`
-
-                        hideMsg(totalOpen)
+                        res.err ? (
+                            err.textContent = `Open : ${res.msg} links.`,
+                            hideMsg(err)
+                        ) : (
+                            info.textContent = `Open : ${res.msg}`,
+                            hideMsg(info)
+                        )
                     }
                 } catch (error) {
-                    err.textContent = res.msg
+                    err.textContent = error
                     hideMsg(err)
                     console.error('Error sending message:', error)
                 }
@@ -62,7 +65,7 @@ document.querySelectorAll('.action').forEach(btn => btn.addEventListener('click'
                     action: 'open-taken'
                 })
                 if (res && res.success) {
-                    totalOpen.textContent = `Total To Open : ${res.msg}`
+                    res.textContent = `Open : ${res.msg}`
                     hideMsg(info)
                 }
             } catch (error) {
@@ -73,7 +76,9 @@ document.querySelectorAll('.action').forEach(btn => btn.addEventListener('click'
 })
 )
 const hideMsg = (elem) => {
+    elem.classList.add('display-msg')
     setTimeout(() => {
+        elem.classList.remove('display-msg')
         elem.textContent = ''
-    }, 5000)
+    }, 4000)
 }
