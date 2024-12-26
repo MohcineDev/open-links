@@ -15,8 +15,9 @@ browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
         else if (msg.site === 'drop')
             links = document.querySelectorAll('a.domain')
-        else if (msg.selector) {
-            links = document.querySelectorAll(`${msg.selector}`)
+        
+        else if (msg.cssSelector) {
+            links = document.querySelectorAll(`${msg.cssSelector}`)
         }
         ///.Nv2PK.tH5CWc.THOPZb a[data-value="Website"]
     } else if (msg.action === 'stopInterval') {

@@ -1,5 +1,6 @@
 const info = document.querySelector('.info')
 const err = document.querySelector('.err')
+const selector = document.querySelector('.selector')
 
 let openBy = document.querySelector(".elem span");
 const btns = document.querySelectorAll(".elem button");
@@ -12,8 +13,14 @@ function handleClick(btn) {
     openBy.textContent = value;
 }
 
+///toggle selector
+document.querySelectorAll('input[type="radio"]').forEach(elem => elem.addEventListener('change', e => {
+    selector.style.display = e.target.id == 'none' ? 'block' : 'none'
+}))
+
+
 document.querySelectorAll('.action').forEach(btn => btn.addEventListener('click', async e => {
-    const selector = document.querySelector('.selector').value.trim()
+    const cssSelector = selector.value.trim()
     ///after the open is clicked
     let openByNbr = openBy.textContent
     const siteRadio = document.querySelector('input[type="radio"]:checked').id
@@ -21,13 +28,13 @@ document.querySelectorAll('.action').forEach(btn => btn.addEventListener('click'
 
     if (tabs.length > 0) {
         if (e.target.id === 'runScript') {
-            if (siteRadio === 'none' && selector === '') {
+            if (siteRadio === 'none' && cssSelector === '') {
                 err.textContent = "enter css selector\n or select a site"
                 hideMsg(err)
             } else {
                 try {
                     const res = await browser.tabs.sendMessage(tabs[0].id, {
-                        action: 'runScript', selector, site: siteRadio,
+                        action: 'runScript', cssSelector, site: siteRadio,
                         openByNbr
                     })
                     if (res && res.success) {

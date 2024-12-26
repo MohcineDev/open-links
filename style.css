@@ -18,7 +18,6 @@ h1 {
 
 label {
     user-select: none;
-
 }
 
 span {
@@ -137,6 +136,7 @@ button {
 
 .selector{
     font-size: 11px;
+    transition:  display 0.5s;
 }
 
 /* ///expired */
@@ -147,4 +147,11 @@ button {
 
 #taken:hover {
     background-color: #ac1d24;
+}
+footer{
+    text-align: center;
+}
+footer span{
+    font-size: 10px;
+    color: gray;
 }
