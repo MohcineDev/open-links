@@ -151,7 +151,7 @@ button {
 footer{
     text-align: center;
 }
-footer span{
+footer a{
     font-size: 10px;
     color: gray;
 }
