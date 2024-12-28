@@ -2,10 +2,10 @@
 const toOpen = 2
 let count = 0
 let links = []
-let myInter;
 let OPEN = 1
 let stopOnGoing = false
 let toWait = true
+let myInter;
 
 browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (msg.action === 'runScript') {
@@ -15,21 +15,21 @@ browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
         else if (msg.site === 'drop')
             links = document.querySelectorAll('a.domain')
-        
+
         else if (msg.cssSelector) {
             links = document.querySelectorAll(`${msg.cssSelector}`)
         }
         ///.Nv2PK.tH5CWc.THOPZb a[data-value="Website"]
     } else if (msg.action === 'stopInterval') {
         sendResponse({ success: true, msg: "Opening Stopped!!!!" })
-        stopInterval(myInter)
+        stopInterval()
     } else if (msg.action == "open-taken") {
         links = document.querySelectorAll("#namecheck .taken div:nth-of-type(2) a")
         toWait = false
     }
 
     links.length ? (
-        usingInterval(links, toWait),
+        usingInterval(links.length, toWait),
         sendResponse({ success: true, msg: links.length, err: false })
     ) : (
         sendResponse({ success: true, msg: "Link not found \nOR\nInvalid Selector!!", err: true })
@@ -58,16 +58,17 @@ function usingInterval(links, wait) {
     openLinks()
     let milli = wait ? 10000 : 0
     myInter = setInterval(() => {
-
-        if (count >= links) {
-            stopInterval(myInter)
+        if (count >= links || stopOnGoing) {
+            stopInterval()
         } else {
             openLinks()
         }
     }, milli)
 }
 
-const stopInterval = (inter) => {
+const stopInterval = () => {
+
     stopOnGoing = true
-    clearInterval(inter)
+    clearInterval(myInter)
+    myInter = null
 }
