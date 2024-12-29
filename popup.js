@@ -72,8 +72,14 @@ document.querySelectorAll('.action').forEach(btn => btn.addEventListener('click'
                     action: 'open-taken'
                 })
                 if (res && res.success) {
-                    res.textContent = `Open : ${res.msg}`
-                    hideMsg(info)
+                    res.err ? (
+                        err.textContent = `Open : ${res.msg}`,
+                        hideMsg(err)
+                    ) : (
+
+                        info.textContent = `Open : ${res.msg}`,
+                        hideMsg(info)
+                    )
                 }
             } catch (error) {
                 console.error('Error sending message:', error)

@@ -1,13 +1,14 @@
 //how many to open at a time
 const toOpen = 2
 let count = 0
-let links = []
 let OPEN = 1
-let stopOnGoing = false
+let stopOpening = false
 let toWait = true
-let myInter;
 
 browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+    count = 0
+    let links = []
+    stopOpening = false
     if (msg.action === 'runScript') {
         OPEN = parseInt(msg.openByNbr)
         if (msg.site === 'google')
@@ -25,11 +26,13 @@ browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         stopInterval()
     } else if (msg.action == "open-taken") {
         links = document.querySelectorAll("#namecheck .taken div:nth-of-type(2) a")
+        console.log(links)
         toWait = false
+        console.log("taken clicked")
     }
 
     links.length ? (
-        usingInterval(links.length, toWait),
+        usingInterval(links, toWait),
         sendResponse({ success: true, msg: links.length, err: false })
     ) : (
         sendResponse({ success: true, msg: "Link not found \nOR\nInvalid Selector!!", err: true })
@@ -38,11 +41,11 @@ browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 })
 
 ///open links in new tabs
-function openLinks() {
+function openLinks(links) {
 
     // let a = OPEN > toOpen ? toOpen : OPEN
-    if (!stopOnGoing) {
-
+    if (!stopOpening) {
+        console.log(count)
         for (let i = 0; i < OPEN; i++) {
 
             if (links[count + i] != null) {
@@ -51,24 +54,28 @@ function openLinks() {
             }
         }
         count += OPEN
+    } else {
+        console.log("hi")
     }
 }
 
 function usingInterval(links, wait) {
-    openLinks()
+    let myInter = null;
+
+    openLinks(links)
+    console.log(links.length)
     let milli = wait ? 10000 : 0
     myInter = setInterval(() => {
-        if (count >= links || stopOnGoing) {
-            stopInterval()
+        if (count >= links.length || stopOpening) {
+            stopInterval(myInter)
         } else {
-            openLinks()
+            openLinks(links)
         }
     }, milli)
 }
 
-const stopInterval = () => {
-
-    stopOnGoing = true
+const stopInterval = (myInter) => {
+    stopOpening = true
     clearInterval(myInter)
     myInter = null
 }
