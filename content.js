@@ -4,6 +4,7 @@ let count = 0
 let OPEN = 1
 let stopOpening = false
 let toWait = true
+let milli = 0
 
 browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     count = 0
@@ -11,6 +12,8 @@ browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     stopOpening = false
     if (msg.action === 'runScript') {
         OPEN = parseInt(msg.openByNbr)
+        milli = parseInt(msg.openInSec) * 1000
+
         if (msg.site === 'google')
             links = document.querySelectorAll('#rso span>a')
 
@@ -26,7 +29,7 @@ browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         stopInterval()
     } else if (msg.action == "open-taken") {
         links = document.querySelectorAll("#namecheck .taken div:nth-of-type(2) a")
-        console.log(links)
+        //open takne tlds all in time
         toWait = false
         console.log("taken clicked")
     }
@@ -63,8 +66,9 @@ function usingInterval(links, wait) {
     let myInter = null;
 
     openLinks(links)
-    console.log(links.length)
-    let milli = wait ? 10000 : 0
+    if (!wait)
+        milli = 0
+
     myInter = setInterval(() => {
         if (count >= links.length || stopOpening) {
             stopInterval(myInter)

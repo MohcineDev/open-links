@@ -2,15 +2,25 @@ const info = document.querySelector('.info')
 const err = document.querySelector('.err')
 const selector = document.querySelector('.selector')
 
-let openBy = document.querySelector(".elem span");
+let openBy = document.querySelector(".open-by .elem span");
+let openIn = document.querySelector(".open-in .elem span");
 const btns = document.querySelectorAll(".elem button");
 btns.forEach((btn) => (btn.onclick = () => handleClick(btn)));
 
 function handleClick(btn) {
-    let value = parseInt(openBy.textContent);
-    btn.textContent == "-" ? (value -= 1) : (value += 1);
-    value > 10 ? (value = 10) : value < 1 ? (value = 1) : null;
-    openBy.textContent = value;
+
+///if open in .. seconds clicked
+    if (btn.parentElement.classList.contains('seconds')) {
+        let value = parseInt(openIn.textContent);
+        btn.textContent == "-" ? (value -= 1) : (value += 1);
+        value > 15 ? (value = 15) : value < 1 ? (value = 1) : null;
+        openIn.textContent = value;
+    } else {
+        let value = parseInt(openBy.textContent);
+        btn.textContent == "-" ? (value -= 1) : (value += 1);
+        value > 10 ? (value = 10) : value < 1 ? (value = 1) : null;
+        openBy.textContent = value;
+    }
 }
 
 ///toggle selector
@@ -23,6 +33,9 @@ document.querySelectorAll('.action').forEach(btn => btn.addEventListener('click'
     const cssSelector = selector.value.trim()
     ///after the open is clicked
     let openByNbr = openBy.textContent
+    ///open how many links selected bu open by in  each time
+    let openInSec = openIn.textContent
+
     const siteRadio = document.querySelector('input[type="radio"]:checked').id
     const tabs = await browser.tabs.query({ active: true, currentWindow: true })
 
@@ -35,7 +48,7 @@ document.querySelectorAll('.action').forEach(btn => btn.addEventListener('click'
                 try {
                     const res = await browser.tabs.sendMessage(tabs[0].id, {
                         action: 'runScript', cssSelector, site: siteRadio,
-                        openByNbr
+                        openByNbr, openInSec
                     })
                     if (res && res.success) {
                         res.err ? (
