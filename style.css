@@ -73,7 +73,7 @@ button {
     background-color: rgb(38, 174, 76);
 }
 
-.display-msg{
+.display-msg {
     top: 50px;
 }
 
@@ -93,7 +93,7 @@ button {
     outline: none;
 }
 
-.open-by {
+.options>div {
     display: flex;
     align-items: center;
 }
@@ -134,9 +134,13 @@ button {
     border-radius: 0 5px 5px 0;
 }
 
-.selector{
+.open-in {
+    margin-top: 5px;
+}
+
+.selector {
     font-size: 11px;
-    transition:  display 0.5s;
+    transition: display 0.5s;
 }
 
 /* ///expired */
@@ -148,10 +152,12 @@ button {
 #taken:hover {
     background-color: #ac1d24;
 }
-footer{
+
+footer {
     text-align: center;
 }
-footer a{
+
+footer a {
     font-size: 10px;
     color: gray;
 }
